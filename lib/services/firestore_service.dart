@@ -49,6 +49,39 @@ class FirestoreService {
 
   Future<void> deleteHistoryEntry(String id) => _history.doc(id).delete();
 
+  /// Removes history entries older than [days]. Server-side retention is
+  /// preferred, but this lets users prune from Settings.
+  Future<int> pruneHistory({int olderThanDays = 90}) async {
+    final cutoff = DateTime.now()
+        .toUtc()
+        .subtract(Duration(days: olderThanDays))
+        .millisecondsSinceEpoch;
+    final snap = await _history
+        .where('triggeredAt', isLessThan: cutoff)
+        .limit(500)
+        .get();
+    final batch = FirebaseFirestore.instance.batch();
+    for (final doc in snap.docs) {
+      batch.delete(doc.reference);
+    }
+    await batch.commit();
+    return snap.docs.length;
+  }
+
+  Future<void> clearHistory() async {
+    const maxPerBatch = 450;
+    while (true) {
+      final snap = await _history.limit(maxPerBatch).get();
+      if (snap.docs.isEmpty) return;
+      final batch = FirebaseFirestore.instance.batch();
+      for (final doc in snap.docs) {
+        batch.delete(doc.reference);
+      }
+      await batch.commit();
+      if (snap.docs.length < maxPerBatch) return;
+    }
+  }
+
   // ---------- Devices (FCM tokens) ----------
 
   Future<void> registerDevice(String token, {String? platform}) =>

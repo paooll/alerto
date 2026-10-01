@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import '../../providers/alert_providers.dart';
 import '../../providers/auth_provider.dart';
 import '../../services/auth_service.dart';
 import '../../services/notification_service.dart';
@@ -34,6 +35,26 @@ class SettingsScreen extends ConsumerWidget {
               title: Text('Push notifications'),
               subtitle: Text('Managed by the app — alerts are evaluated on the '
                   'server, so notifications arrive even when the app is closed.'),
+            ),
+          ),
+          const SizedBox(height: 8),
+          Card(
+            child: ListTile(
+              leading: const Icon(Icons.cleaning_services_outlined),
+              title: const Text('Prune old history'),
+              subtitle: const Text('Delete trigger records older than 90 days'),
+              trailing: const Icon(Icons.chevron_right),
+              onTap: () async {
+                final svc = ref.read(firestoreServiceProvider);
+                if (svc == null) return;
+                final deleted = await svc.pruneHistory();
+                if (!context.mounted) return;
+                ScaffoldMessenger.of(context).showSnackBar(
+                  SnackBar(content: Text(deleted == 0
+                      ? 'Nothing to prune.'
+                      : 'Deleted $deleted old records.')),
+                );
+              },
             ),
           ),
           const SizedBox(height: 24),

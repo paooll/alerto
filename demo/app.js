@@ -493,13 +493,50 @@ function renderHistory() {
     list.innerHTML = `<div class="empty"><svg viewBox="0 0 24 24" width="42" height="42" fill="none" stroke="var(--text-dim)" stroke-width="1.6" stroke-linecap="round"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 3"/></svg>No triggered alerts yet.<br>The demo evaluator runs every 2 seconds against live simulated prices.</div>`;
     return;
   }
-  list.innerHTML = state.history
-    .slice(0, 50)
-    .map((h) => `<div class="card">
-      <div class="tile-top"><svg class="hist-icon" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="var(--gold)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 8a6 6 0 0 0-12 0c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.7 21a2 2 0 0 1-3.4 0"/></svg><b>${h.alert.name || h.alert.symbol} · ${h.alert.symbol}</b>
-        <span class="chip" style="margin-left:auto">${new Date(h.at).toLocaleTimeString()}</span></div>
-      <div class="tile-sub">Triggered at ${fmt(h.price, h.alert ? (state.instruments.find((i) => i.symbol === h.alert.symbol)?.prec ?? 2) : 2)} · ${describe(h.alert)}</div>
-    </div>`)
+
+  // Group by calendar day (mirrors GroupedHistoryList in Flutter)
+  const dayKey = (t) => new Date(t).toDateString();
+  const dayLabel = (t) => {
+    const d = new Date(t), now = new Date();
+    const today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+    const that = new Date(d.getFullYear(), d.getMonth(), d.getDate());
+    const diff = Math.round((today - that) / 86400000);
+    if (diff === 0) return "Today";
+    if (diff === 1) return "Yesterday";
+    return d.toLocaleDateString("en-US", { weekday: "long", day: "numeric", month: "short", year: "numeric" });
+  };
+
+  const groups = new Map();
+  state.history.slice(0, 100).forEach((h) => {
+    const k = dayKey(h.at);
+    if (!groups.has(k)) groups.set(k, { label: dayLabel(h.at), items: [] });
+    groups.get(k).items.push(h);
+  });
+
+  list.innerHTML = [...groups.values()]
+    .map(
+      (g) => `
+      <p class="day-label">${g.label}</p>
+      ${g.items
+        .map((h) => {
+          const inst = state.instruments.find((i) => i.symbol === h.alert.symbol);
+          const prec = inst?.prec ?? 2;
+          return `<div class="card">
+            <div class="tile-top">
+              <span class="hist-badge"><svg viewBox="0 0 24 24" width="17" height="17" fill="none" stroke="var(--gold)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 8a6 6 0 0 0-12 0c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.7 21a2 2 0 0 1-3.4 0"/></svg></span>
+              <div style="min-width:0">
+                <b>${h.alert.name || h.alert.symbol} · ${h.alert.symbol}</b>
+                <div class="tile-sub" style="white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${describe(h.alert)}</div>
+              </div>
+              <div class="tile-right" style="position:static">
+                <div class="tile-price" style="font-size:14px">${fmt(h.price, prec)}</div>
+                <div class="tile-sub" style="text-align:right">${new Date(h.at).toLocaleTimeString()}</div>
+              </div>
+            </div>
+          </div>`;
+        })
+        .join("")}`
+    )
     .join("");
 }
 
