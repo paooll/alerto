@@ -1,0 +1,35 @@
+# Flutter / Dart
+.dart_tool/
+.packages
+build/
+.flutter-plugins
+.flutter-plugins-dependencies
+pubspec.lock
+
+# IDE
+.idea/
+.vscode/
+*.iml
+
+# Firebase / secrets — never commit
+firebase_options*.dart
+google-services.json
+GoogleService-Info.plist
+serviceAccountKey*.json
+.env
+.env.*
+firebase-debug.log
+firestore.indexes.json.backup
+
+# Platform
+android/.gradle/
+android/local.properties
+ios/Pods/
+ios/.symlinks/
+ios/Flutter/Flutter.framework
+ios/Flutter/Flutter.podspec
+ios/Runner.xcworkspace/xcuserdata/
+ios/Runner.xcodeproj/xcuserdata/
+
+# OS
+.DS_Store

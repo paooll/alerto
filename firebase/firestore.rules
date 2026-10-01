@@ -1,0 +1,44 @@
+rules_version = '2';
+
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    function isSignedIn() {
+      return request.auth != null;
+    }
+
+    function isOwner(userId) {
+      return isSignedIn() && request.auth.uid == userId;
+    }
+
+    // Public read-only catalog cache written by Cloud Functions (Admin SDK).
+    match /catalog/{docId} {
+      allow read: if true;
+      allow write: if false;
+    }
+
+    // Per-user data. Only the owner can read/write their own subtree.
+    match /users/{userId} {
+      allow read, write: if isOwner(userId);
+
+      match /alerts/{alertId} {
+        allow read, write: if isOwner(userId);
+      }
+      match /alertHistory/{historyId} {
+        allow read, write: if isOwner(userId);
+      }
+      match /devices/{deviceId} {
+        allow read, write: if isOwner(userId);
+      }
+      match /settings/{settingsId} {
+        allow read, write: if isOwner(userId);
+      }
+    }
+
+    // Server-maintained evaluation state (price snapshots, watchlists).
+    // Written only by Cloud Functions via Admin SDK; not user-readable.
+    match /marketState/{docId} {
+      allow read, write: if false;
+    }
+  }
+}
