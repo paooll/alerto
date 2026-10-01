@@ -63,7 +63,7 @@ class InstrumentDetailScreen extends ConsumerWidget {
                             title: Text(a.name ?? a.displayName),
                             subtitle: Text(describeConditions(a.conditions)),
                             trailing: const Icon(Icons.notifications_active,
-                                color: AppTheme.gold),
+                                color: AppColors.gold),
                           ),
                         ))
                     .toList(),
@@ -73,8 +73,8 @@ class InstrumentDetailScreen extends ConsumerWidget {
         ],
       ),
       floatingActionButton: FloatingActionButton.extended(
-        backgroundColor: AppTheme.gold,
-        foregroundColor: AppTheme.bg,
+        backgroundColor: AppColors.gold,
+        foregroundColor: Theme.of(context).scaffoldBackgroundColor,
         icon: const Icon(Icons.add_alert),
         label: const Text('Create alert'),
         onPressed: () => Navigator.of(context).push(MaterialPageRoute(
@@ -96,12 +96,12 @@ class _EmptyAlerts extends StatelessWidget {
         child: Row(
           children: [
             Icon(Icons.notifications_off_outlined,
-                color: AppTheme.textSecondary),
+                color: Theme.of(context).textDim),
             const SizedBox(width: 12),
             Expanded(
               child: Text(
                 'No active alerts for this instrument yet.',
-                style: TextStyle(color: AppTheme.textSecondary),
+                style: TextStyle(color: Theme.of(context).textDim),
               ),
             ),
           ],
@@ -130,7 +130,7 @@ class _PriceHeader extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(instrument.displayName,
-              style: const TextStyle(color: AppTheme.textSecondary)),
+              style: TextStyle(color: Theme.of(context).textDim)),
           const SizedBox(height: 4),
           Row(
             crossAxisAlignment: CrossAxisAlignment.baseline,
@@ -149,7 +149,7 @@ class _PriceHeader extends StatelessWidget {
                 Text(
                   DateFormat('HH:mm:ss').format(quote!.timestamp!.toLocal()),
                   style: const TextStyle(
-                      color: AppTheme.textSecondary, fontSize: 13),
+                      color: Theme.of(context).textDim, fontSize: 13),
                 ),
               ],
             ],
@@ -158,11 +158,11 @@ class _PriceHeader extends StatelessWidget {
             const SizedBox(height: 4),
             Row(children: [
               Icon(up ? Icons.arrow_drop_up : Icons.arrow_drop_down,
-                  color: up ? AppTheme.green : AppTheme.red, size: 28),
+                  color: up ? AppColors.green : AppColors.red, size: 28),
               Text(
                 '${up ? '+' : ''}${change.toStringAsFixed(2)}% vs prev close',
                 style: TextStyle(
-                    color: up ? AppTheme.green : AppTheme.red,
+                    color: up ? AppColors.green : AppColors.red,
                     fontWeight: FontWeight.w600),
               ),
             ]),
@@ -195,15 +195,15 @@ class _StatsGrid extends StatelessWidget {
                     margin: const EdgeInsets.symmetric(horizontal: 4),
                     padding: const EdgeInsets.symmetric(vertical: 14),
                     decoration: BoxDecoration(
-                      color: AppTheme.card,
+                      color: Theme.of(context).cardTheme.color!,
                       borderRadius: BorderRadius.circular(12),
-                      border: Border.all(color: AppTheme.border),
+                      border: Border.all(color: Theme.of(context).dividerTheme.color!),
                     ),
                     child: Column(
                       children: [
                         Text(c.$1,
                             style: const TextStyle(
-                                color: AppTheme.textSecondary, fontSize: 12)),
+                                color: Theme.of(context).textDim, fontSize: 12)),
                         const SizedBox(height: 4),
                         Text(
                           c.$2 != null

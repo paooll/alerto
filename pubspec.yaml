@@ -18,6 +18,7 @@ dependencies:
   firebase_app_check: ^0.3.1
   # State & utilities
   flutter_riverpod: ^2.5.1
+  google_fonts: ^6.2.1
   intl: ^0.19.0
   collection: ^1.18.0
 

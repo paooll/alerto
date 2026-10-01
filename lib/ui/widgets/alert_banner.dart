@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:ui';
 
 import 'package:flutter/material.dart';
 
@@ -78,53 +79,70 @@ class _AlertBannerState extends State<AlertBanner>
                   opacity: _fade,
                   child: Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
-                    child: Material(
-                      color: AppTheme.card,
-                      borderRadius: BorderRadius.circular(16),
-                      elevation: 8,
-                      shadowColor: Colors.black54,
-                      child: InkWell(
-                        borderRadius: BorderRadius.circular(16),
-                        onTap: () {
-                          unawaited(_hide());
-                          widget.onTap?.call(_current?.payload.symbol);
-                        },
-                        child: Padding(
-                          padding: const EdgeInsets.all(14),
-                          child: Row(
-                            children: [
-                              Container(
-                                width: 38,
-                                height: 38,
-                                decoration: BoxDecoration(
-                                  color: AppTheme.gold.withOpacity(0.15),
-                                  borderRadius: BorderRadius.circular(12),
-                                ),
-                                child: const Icon(Icons.notifications_active,
-                                    color: AppTheme.gold, size: 20),
+                    child: ClipRRect(
+                      borderRadius: BorderRadius.circular(18),
+                      child: BackdropFilter(
+                        filter: ImageFilter.blur(sigmaX: 24, sigmaY: 24),
+                        child: Material(
+                          color: Theme.of(context)
+                              .colorScheme.surface
+                              .withOpacity(0.82),
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(18),
+                            side: BorderSide(
+                              color: Theme.of(context)
+                                  .dividerTheme.color!
+                                  .withOpacity(0.6),
+                            ),
+                          ),
+                          elevation: 8,
+                          shadowColor: Colors.black45,
+                          child: InkWell(
+                            borderRadius: BorderRadius.circular(18),
+                            onTap: () {
+                              unawaited(_hide());
+                              widget.onTap?.call(_current?.payload.symbol);
+                            },
+                            child: Padding(
+                              padding: const EdgeInsets.all(14),
+                              child: Row(
+                                children: [
+                                  Container(
+                                    width: 38,
+                                    height: 38,
+                                    decoration: BoxDecoration(
+                                      color: AppColors.gold.withOpacity(0.15),
+                                      borderRadius: BorderRadius.circular(12),
+                                    ),
+                                    child: const Icon(Icons.notifications_active,
+                                        color: AppColors.gold, size: 20),
+                                  ),
+                                  const SizedBox(width: 12),
+                                  Expanded(
+                                    child: Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      mainAxisSize: MainAxisSize.min,
+                                      children: [
+                                        Text(_current!.title,
+                                            maxLines: 1,
+                                            overflow: TextOverflow.ellipsis,
+                                            style: const TextStyle(
+                                                fontWeight: FontWeight.w700)),
+                                        if (_current!.body.isNotEmpty)
+                                          Text(_current!.body,
+                                              maxLines: 2,
+                                              overflow: TextOverflow.ellipsis,
+                                              style: TextStyle(
+                                                  color:
+                                                      Theme.of(context).textDim,
+                                                  fontSize: 13)),
+                                      ],
+                                    ),
+                                  ),
+                                ],
                               ),
-                              const SizedBox(width: 12),
-                              Expanded(
-                                child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  mainAxisSize: MainAxisSize.min,
-                                  children: [
-                                    Text(_current!.title,
-                                        maxLines: 1,
-                                        overflow: TextOverflow.ellipsis,
-                                        style: const TextStyle(
-                                            fontWeight: FontWeight.w700)),
-                                    if (_current!.body.isNotEmpty)
-                                      Text(_current!.body,
-                                          maxLines: 2,
-                                          overflow: TextOverflow.ellipsis,
-                                          style: const TextStyle(
-                                              color: AppTheme.textSecondary,
-                                              fontSize: 13)),
-                                  ],
-                                ),
-                              ),
-                            ],
+                            ),
                           ),
                         ),
                       ),

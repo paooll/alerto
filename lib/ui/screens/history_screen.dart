@@ -92,14 +92,14 @@ class _EmptyState extends StatelessWidget {
       child: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
-          Icon(Icons.history_outlined, size: 64, color: AppTheme.textSecondary),
+          Icon(Icons.history_outlined, size: 64, color: Theme.of(context).textDim),
           const SizedBox(height: 12),
           const Text('No triggered alerts yet'),
           const SizedBox(height: 4),
           const Text(
             'When an alert fires it will show up here —\neven if it was deleted afterwards.',
             textAlign: TextAlign.center,
-            style: TextStyle(color: AppTheme.textSecondary),
+            style: TextStyle(color: Theme.of(context).textDim),
           ),
         ],
       ),

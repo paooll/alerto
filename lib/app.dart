@@ -12,7 +12,22 @@ import 'ui/screens/instrument_detail_screen.dart';
 import 'ui/screens/root_shell.dart';
 import 'ui/theme.dart';
 import 'ui/widgets/alert_banner.dart';
+import 'ui/widgets/glass_container.dart';
 import 'domain/instrument.dart';
+
+/// Light/dark selection: follows the system by default.
+final themeModeProvider =
+    StateNotifierProvider<ThemeModeController, ThemeMode>((ref) {
+  return ThemeModeController();
+});
+
+class ThemeModeController extends StateNotifier<ThemeMode> {
+  ThemeModeController() : super(ThemeMode.system);
+
+  void set(ThemeMode mode) => state = mode;
+  void toggle() =>
+      state = state == ThemeMode.dark ? ThemeMode.light : ThemeMode.dark;
+}
 
 class AlertoApp extends ConsumerStatefulWidget {
   const AlertoApp({super.key});
@@ -58,6 +73,7 @@ class _AlertoAppState extends ConsumerState<AlertoApp> {
   @override
   Widget build(BuildContext context) {
     final authState = ref.watch(authStateProvider);
+    final themeMode = ref.watch(themeModeProvider);
 
     // Register/unregister the FCM device on auth changes.
     authState.whenData((user) {
@@ -70,14 +86,20 @@ class _AlertoAppState extends ConsumerState<AlertoApp> {
     return MaterialApp(
       title: 'Alerto',
       debugShowCheckedModeBanner: false,
-      theme: AppTheme.dark,
+      themeMode: themeMode,
+      theme: AppTheme.light(),
+      darkTheme: AppTheme.dark(),
       home: authState.when(
         data: (user) => user == null
             ? const AuthScreen()
-            : AlertBanner(
-                onTap: (symbol) =>
-                    symbol != null ? _onTap(AlertPayload(type: 'alertTriggered', symbol: symbol)) : null,
-                child: const RootShell(),
+            : GlassContainer(
+                child: AlertBanner(
+                  onTap: (symbol) => symbol != null
+                      ? _onTap(AlertPayload(
+                          type: 'alertTriggered', symbol: symbol))
+                      : null,
+                  child: const RootShell(),
+                ),
               ),
         loading: () => const Scaffold(
           body: Center(child: CircularProgressIndicator()),

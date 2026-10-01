@@ -57,10 +57,10 @@ class _AlertTile extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final upNext = alert.mode == AlertMode.once ? 'One-time' : 'Repeating';
     final statusColor = alert.isExpired
-        ? AppTheme.textSecondary
+        ? Theme.of(context).textDim
         : alert.enabled
-            ? AppTheme.green
-            : AppTheme.textSecondary;
+            ? AppColors.green
+            : Theme.of(context).textDim;
 
     return Card(
       child: ListTile(
@@ -103,7 +103,7 @@ class _AlertTile extends ConsumerWidget {
               '${alert.mode == AlertMode.repeating && alert.cooldownMinutes > 0 ? ' · ${alert.cooldownMinutes}m cooldown' : ''}'
               '${alert.expiresAt != null ? ' · expires ${DateFormat.MMMd().add_Hm().format(alert.expiresAt!.toLocal())}' : ''}',
               style: const TextStyle(
-                  color: AppTheme.textSecondary, fontSize: 12),
+                  color: Theme.of(context).textDim, fontSize: 12),
             ),
           ],
         ),
@@ -117,7 +117,7 @@ class _AlertTile extends ConsumerWidget {
             ),
             IconButton(
               icon: const Icon(Icons.delete_outline,
-                  color: AppTheme.textSecondary),
+                  color: Theme.of(context).textDim),
               onPressed: () async {
                 final confirmed = await showDialog<bool>(
                   context: context,
@@ -158,13 +158,13 @@ class _EmptyState extends StatelessWidget {
       child: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
-          Icon(Icons.notifications_none, size: 64, color: AppTheme.textSecondary),
+          Icon(Icons.notifications_none, size: 64, color: Theme.of(context).textDim),
           const SizedBox(height: 12),
           const Text('No alerts yet'),
           const SizedBox(height: 4),
           const Text(
             'Search an instrument and create your first alert.',
-            style: TextStyle(color: AppTheme.textSecondary),
+            style: TextStyle(color: Theme.of(context).textDim),
           ),
         ],
       ),

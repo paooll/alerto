@@ -52,15 +52,15 @@ class DashboardScreen extends ConsumerWidget {
                 height: 50,
                 padding: const EdgeInsets.symmetric(horizontal: 16),
                 decoration: BoxDecoration(
-                  color: AppTheme.cardMuted,
+                  color: Theme.of(context).colorScheme.surfaceContainerHighest,
                   borderRadius: BorderRadius.circular(12),
                 ),
-                child: const Row(
+                child: Row(
                   children: [
-                    Icon(Icons.search, color: AppTheme.textSecondary),
-                    SizedBox(width: 10),
+                    Icon(Icons.search, color: Theme.of(context).textDim),
+                    const SizedBox(width: 10),
                     Text('Search Forex, Gold, CFDs…',
-                        style: TextStyle(color: AppTheme.textSecondary)),
+                        style: TextStyle(color: Theme.of(context).textDim)),
                   ],
                 ),
               ),
@@ -79,7 +79,7 @@ class DashboardScreen extends ConsumerWidget {
                   padding: const EdgeInsets.all(24),
                   child: Text('Failed to load markets.\n\n$e',
                       textAlign: TextAlign.center,
-                      style: const TextStyle(color: AppTheme.textSecondary)),
+                      style: TextStyle(color: Theme.of(context).textDim)),
                 ),
               ),
               data: (list) {
@@ -118,6 +118,7 @@ class _MarketTile extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final quote = ref.watch(quoteStreamProvider(instrument.symbol)).value;
+    final theme = Theme.of(context);
     final prec = instrument.pricePrecision;
     final fmt = NumberFormat.decimalPattern()..minimumFractionDigits = prec;
     final change = quote?.changePercent;
@@ -136,19 +137,19 @@ class _MarketTile extends ConsumerWidget {
               Container(
                 padding: const EdgeInsets.symmetric(horizontal: 7, vertical: 2),
                 decoration: BoxDecoration(
-                  color: AppTheme.gold.withOpacity(0.15),
+                  color: AppColors.gold.withOpacity(0.15),
                   borderRadius: BorderRadius.circular(999),
                 ),
                 child: Text('$activeAlerts',
                     style: const TextStyle(
-                        color: AppTheme.gold,
+                        color: AppColors.gold,
                         fontSize: 11,
                         fontWeight: FontWeight.w700)),
               ),
           ],
         ),
         subtitle: Text(instrument.displayName,
-            style: const TextStyle(color: AppTheme.textSecondary)),
+            style: TextStyle(color: theme.textDim)),
         trailing: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           crossAxisAlignment: CrossAxisAlignment.end,
@@ -160,7 +161,7 @@ class _MarketTile extends ConsumerWidget {
               Text(
                 '${up ? '+' : ''}${change.toStringAsFixed(2)}%',
                 style: TextStyle(
-                    color: up ? AppTheme.green : AppTheme.red,
+                    color: up ? theme.good : theme.bad,
                     fontSize: 12,
                     fontWeight: FontWeight.w600),
               ),

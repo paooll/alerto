@@ -56,7 +56,7 @@ class _InstrumentSearchScreenState
                   child: Text(
                     'Could not load instrument catalog.\n\n$e',
                     textAlign: TextAlign.center,
-                    style: const TextStyle(color: AppTheme.textSecondary),
+                    style: TextStyle(color: Theme.of(context).textDim),
                   ),
                 ),
               ),
@@ -87,7 +87,7 @@ class _InstrumentSearchScreenState
                             style: const TextStyle(fontWeight: FontWeight.w700)),
                         subtitle: Text(inst.displayName,
                             style: const TextStyle(
-                                color: AppTheme.textSecondary)),
+                                color: Theme.of(context).textDim)),
                         trailing: Chip(
                           label: Text(
                             _classLabels[inst.assetClass] ?? 'Other',

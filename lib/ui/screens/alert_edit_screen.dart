@@ -146,7 +146,7 @@ class _AlertEditScreenState extends ConsumerState<AlertEditScreen> {
           const SizedBox(height: 4),
           Text(
             'Trigger when',
-            style: const TextStyle(color: AppTheme.textSecondary, fontSize: 13),
+            style: TextStyle(color: Theme.of(context).textDim, fontSize: 13),
           ),
           const SizedBox(height: 8),
           SegmentedButton<Logic>(
@@ -204,7 +204,7 @@ class _AlertEditScreenState extends ConsumerState<AlertEditScreen> {
                   child: Text(
                     _cooldownMinutes == 0 ? 'None' : '${_cooldownMinutes} min',
                     textAlign: TextAlign.end,
-                    style: const TextStyle(color: AppTheme.textSecondary),
+                    style: TextStyle(color: Theme.of(context).textDim),
                   ),
                 ),
               ],
@@ -368,7 +368,7 @@ class _ConditionCard extends StatelessWidget {
                 if (canRemove)
                   IconButton(
                     icon: const Icon(Icons.delete_outline,
-                        color: AppTheme.textSecondary),
+                        color: Theme.of(context).textDim),
                     onPressed: onRemove,
                   ),
               ],

@@ -43,7 +43,7 @@ class GroupedHistoryList extends StatelessWidget {
               child: Text(
                 label,
                 style: const TextStyle(
-                  color: AppTheme.textSecondary,
+                  color: Theme.of(context).textDim,
                   fontSize: 12,
                   fontWeight: FontWeight.w700,
                   letterSpacing: 0.4,
@@ -80,11 +80,11 @@ class _HistoryTile extends StatelessWidget {
           width: 38,
           height: 38,
           decoration: BoxDecoration(
-            color: AppTheme.gold.withOpacity(0.13),
+            color: AppColors.gold.withOpacity(0.13),
             borderRadius: BorderRadius.circular(12),
           ),
           child: const Icon(Icons.notifications_active,
-              color: AppTheme.gold, size: 19),
+              color: AppColors.gold, size: 19),
         ),
         title: Text(
           '$title · ${entry.symbol}',
@@ -99,7 +99,7 @@ class _HistoryTile extends StatelessWidget {
             Text(subtitle,
                 maxLines: 1,
                 overflow: TextOverflow.ellipsis,
-                style: const TextStyle(color: AppTheme.textSecondary)),
+                style: TextStyle(color: Theme.of(context).textDim)),
           ],
         ),
         trailing: Column(
@@ -113,7 +113,7 @@ class _HistoryTile extends StatelessWidget {
             ),
             Text(time,
                 style: const TextStyle(
-                    color: AppTheme.textSecondary, fontSize: 12)),
+                    color: Theme.of(context).textDim, fontSize: 12)),
           ],
         ),
       ),

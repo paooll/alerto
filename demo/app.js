@@ -85,6 +85,14 @@ document.addEventListener("click", (e) => {
   if (tab) showScreen(tab.dataset.tab);
 });
 
+// ---------- Theme toggle (light/dark) ----------
+
+const root = document.documentElement;
+root.dataset.theme = "dark";
+$("#theme-toggle").addEventListener("click", () => {
+  root.dataset.theme = root.dataset.theme === "dark" ? "light" : "dark";
+});
+
 // ---------- Auth ----------
 
 let isRegister = false;
