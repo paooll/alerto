@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../providers/auth_provider.dart';
 import '../../services/auth_service.dart';
+import '../../services/notification_service.dart';
 import '../../theme.dart';
 
 class SettingsScreen extends ConsumerWidget {
@@ -41,7 +42,10 @@ class SettingsScreen extends ConsumerWidget {
             child: OutlinedButton.icon(
               icon: const Icon(Icons.logout),
               label: const Text('Sign out'),
-              onPressed: () => ref.read(authServiceProvider).signOut(),
+              onPressed: () async {
+                await NotificationService.unregisterForCurrentUser();
+                await ref.read(authServiceProvider).signOut();
+              },
             ),
           ),
           const SizedBox(height: 16),

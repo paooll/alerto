@@ -460,9 +460,29 @@ function evaluateAlerts() {
     a.lastTriggeredAt = now;
     if (a.mode === "once") a.enabled = false;
     state.history.unshift({ id: `h${Date.now()}${Math.random()}`, alert: a, price: inst.price, at: now });
+    showAlertBanner(a, inst.price);
     renderAlerts(); renderMarkets();
   }
   renderHistory();
+}
+
+// ---------- Foreground alert banner (mirrors AlertBanner widget) ----------
+
+let bannerTimer;
+function showAlertBanner(alert, price) {
+  let el = document.getElementById("alert-banner");
+  if (!el) {
+    el = document.createElement("div");
+    el.id = "alert-banner";
+    el.className = "alert-banner";
+    document.querySelector(".phone").appendChild(el);
+  }
+  el.innerHTML = `
+    <div class="banner-icon"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="var(--gold)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 8a6 6 0 0 0-12 0c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.7 21a2 2 0 0 1-3.4 0"/></svg></div>
+    <div><b>${alert.name || alert.symbol}</b><br><small>${alert.symbol} hit your target at ${price}</small></div>`;
+  el.classList.add("show");
+  clearTimeout(bannerTimer);
+  bannerTimer = setTimeout(() => el.classList.remove("show"), 4000);
 }
 
 // ---------- History ----------
