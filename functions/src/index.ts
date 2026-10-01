@@ -64,7 +64,7 @@ export const getTimeSeries = onCall(async (request) => {
   return { points };
 });
 
-// ---------- Scheduled alert evaluation (filled in Step 5) ----------
+// ---------- Scheduled alert evaluation (see evaluator.ts) ----------
 
 /**
  * Polls the distinct watchlist of symbols that have enabled alerts and

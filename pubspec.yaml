@@ -1,4 +1,4 @@
-name: price_alert
+name: alerto
 description: Cross-platform personal price alerts for Forex, Gold and CFDs (Flutter + Firebase).
 publish_to: "none"
 version: 0.1.0

@@ -26,7 +26,7 @@ class DashboardScreen extends ConsumerWidget {
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text('PriceAlert'),
+        title: const Text('Alerto'),
         actions: [
           IconButton(
             icon: const Icon(Icons.add),

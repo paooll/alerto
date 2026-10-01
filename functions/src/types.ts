@@ -48,6 +48,7 @@ export interface Condition {
 
 export interface AlertDoc {
   symbol: string;
+  name?: string | null;
   displayName?: string;
   conditions: Condition[];
   logic: "all" | "any";

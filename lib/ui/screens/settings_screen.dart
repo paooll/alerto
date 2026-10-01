@@ -46,7 +46,7 @@ class SettingsScreen extends ConsumerWidget {
           ),
           const SizedBox(height: 16),
           const Center(
-            child: Text('PriceAlert v0.1.0',
+            child: Text('Alerto v0.1.0',
                 style: TextStyle(color: AppTheme.textSecondary, fontSize: 12)),
           ),
         ],

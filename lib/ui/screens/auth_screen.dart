@@ -88,7 +88,7 @@ class _AuthScreenState extends ConsumerState<AuthScreen> {
                     Icon(Icons.trending_up, size: 56, color: AppTheme.gold),
                     const SizedBox(height: 12),
                     Text(
-                      'PriceAlert',
+                      'Alerto',
                       textAlign: TextAlign.center,
                       style: Theme.of(context).textTheme.headlineMedium?.copyWith(
                             fontWeight: FontWeight.w800,

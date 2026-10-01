@@ -6,15 +6,15 @@ import 'ui/screens/root_shell.dart';
 import 'ui/screens/auth_screen.dart';
 import 'ui/theme.dart';
 
-class PriceAlertApp extends ConsumerWidget {
-  const PriceAlertApp({super.key});
+class AlertoApp extends ConsumerWidget {
+  const AlertoApp({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final authState = ref.watch(authStateProvider);
 
     return MaterialApp(
-      title: 'PriceAlert',
+      title: 'Alerto',
       debugShowCheckedModeBanner: false,
       theme: AppTheme.dark,
       home: authState.when(

@@ -32,5 +32,5 @@ Future<void> main() async {
 
   await NotificationService.init();
 
-  runApp(const ProviderScope(child: PriceAlertApp()));
+  runApp(const ProviderScope(child: AlertoApp()));
 }

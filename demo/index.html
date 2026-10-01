@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+<meta name="theme-color" content="#0f172a" />
+<title>Alerto — Demo</title>
+<link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+<div class="phone">
+  <!-- Screen: Auth -->
+  <section id="screen-auth" class="screen active">
+    <div class="auth-logo">
+      <svg viewBox="0 0 24 24" width="52" height="52" fill="none" stroke="var(--gold)" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 15 8 10 12 14 17 7 21 10"/><polyline points="17 7 21 7 21 11"/><path d="M3 20h18"/></svg>
+    </div>
+    <h1 class="auth-title">Alerto</h1>
+    <p class="auth-sub">Forex · Gold · CFD price alerts</p>
+    <form id="auth-form" autocomplete="off">
+      <label class="field">
+        <span>Email</span>
+        <input type="email" id="auth-email" placeholder="you@example.com" required />
+      </label>
+      <label class="field">
+        <span>Password</span>
+        <input type="password" id="auth-pass" placeholder="••••••••" required minlength="6" />
+      </label>
+      <p id="auth-error" class="auth-error hidden"></p>
+      <button type="submit" class="btn-primary" id="auth-submit">Sign in</button>
+    </form>
+    <button class="btn-text" id="auth-toggle">New here? Create an account</button>
+    <button class="btn-text dim">Forgot password?</button>
+    <p class="demo-note">Demo mode — any email/password works. No real backend.</p>
+  </section>
+
+  <!-- Screen: Dashboard -->
+  <section id="screen-dashboard" class="screen">
+    <header class="topbar">
+      <h2>Alerto</h2>
+      <button class="icon-btn" data-nav="search" aria-label="New alert"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg></button>
+    </header>
+    <div class="search-fake" data-nav="search">
+      <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>
+      Search Forex, Gold, CFDs…
+    </div>
+    <h3 class="section-label">Markets</h3>
+    <div id="market-list" class="list"></div>
+  </section>
+
+  <!-- Screen: Search -->
+  <section id="screen-search" class="screen">
+    <header class="topbar">
+      <button class="icon-btn back" data-nav="dashboard" aria-label="Back"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg></button>
+      <h2>Search instruments</h2>
+    </header>
+    <div class="search-field">
+      <input id="search-input" type="text" placeholder="Search symbol or name… (e.g. XAU, EUR)" />
+    </div>
+    <div id="search-list" class="list"></div>
+  </section>
+
+  <!-- Screen: Detail -->
+  <section id="screen-detail" class="screen">
+    <header class="topbar">
+      <button class="icon-btn back" data-nav="dashboard" aria-label="Back"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg></button>
+      <h2 id="detail-symbol">—</h2>
+    </header>
+    <div class="detail-body">
+      <p class="detail-name" id="detail-name">—</p>
+      <div class="detail-price-row">
+        <span class="detail-price" id="detail-price">—</span>
+        <span class="detail-time" id="detail-time"></span>
+      </div>
+      <p class="detail-change" id="detail-change"></p>
+      <div class="stats-grid">
+        <div class="stat"><span>Bid</span><b id="detail-bid">—</b></div>
+        <div class="stat"><span>Ask</span><b id="detail-ask">—</b></div>
+        <div class="stat"><span>Spread</span><b id="detail-spread">—</b></div>
+      </div>
+      <h3 class="section-label">Price chart</h3>
+      <div class="chart-card">
+        <div class="chart-intervals" id="chart-intervals"></div>
+        <canvas id="chart" width="320" height="160"></canvas>
+      </div>
+      <h3 class="section-label">Active alerts</h3>
+      <div id="detail-alerts" class="list"></div>
+      <button class="fab" id="fab-create">
+        <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 8a6 6 0 0 0-12 0c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.7 21a2 2 0 0 1-3.4 0"/></svg>
+        Create alert
+      </button>
+    </div>
+  </section>
+
+  <!-- Screen: Alert Edit -->
+  <section id="screen-alert-edit" class="screen">
+    <header class="topbar">
+      <button class="icon-btn back" id="alert-back" aria-label="Back"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg></button>
+      <h2 id="alert-title">New alert</h2>
+    </header>
+    <div class="form-body">
+      <label class="field"><span>Alert name (optional)</span>
+        <input id="alert-name" type="text" placeholder="e.g. Gold breakout" />
+      </label>
+      <h3 class="section-label">Trigger when</h3>
+      <div class="segmented" id="logic-toggle">
+        <button class="seg active" data-logic="all">ALL (AND)</button>
+        <button class="seg" data-logic="any">ANY (OR)</button>
+      </div>
+      <div id="conditions"></div>
+      <button class="btn-outline" id="add-condition"><svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" style="vertical-align:-2px;margin-right:4px"><path d="M12 5v14M5 12h14"/></svg>Add condition</button>
+      <h3 class="section-label">Behaviour</h3>
+      <div class="segmented" id="mode-toggle">
+        <button class="seg active" data-mode="once">One-time</button>
+        <button class="seg" data-mode="repeating">Repeating</button>
+      </div>
+      <div id="cooldown-row" class="cooldown-row hidden">
+        <span>Cooldown</span>
+        <input type="range" id="cooldown" min="0" max="240" step="10" value="30" />
+        <b id="cooldown-val">30m</b>
+      </div>
+      <label class="field"><span>Expires</span>
+        <input id="alert-expiry" type="datetime-local" />
+      </label>
+      <label class="switch-row"><span>Enabled</span>
+        <input type="checkbox" id="alert-enabled" checked />
+        <i class="toggle"></i>
+      </label>
+      <button class="btn-primary" id="alert-save">Save alert</button>
+      <p id="alert-saved" class="saved-note hidden">✅ Alert created — check the Alerts tab</p>
+    </div>
+  </section>
+
+  <!-- Screen: Alerts -->
+  <section id="screen-alerts" class="screen">
+    <header class="topbar"><h2>Alerts</h2></header>
+    <div id="alerts-list" class="list"></div>
+  </section>
+
+  <!-- Screen: History -->
+  <section id="screen-history" class="screen">
+    <header class="topbar"><h2>History</h2></header>
+    <div id="history-list" class="list"></div>
+  </section>
+
+  <!-- Screen: Settings -->
+  <section id="screen-settings" class="screen">
+    <header class="topbar"><h2>Settings</h2></header>
+    <div class="form-body">
+      <div class="card row-card">
+        <div class="avatar"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="var(--gold)" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4 3.6-7 8-7s8 3 8 7"/></svg></div>
+        <div><b id="settings-email">user@demo.com</b><br /><small>Firebase Authentication (demo)</small></div>
+      </div>
+      <div class="card row-card">
+        <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="var(--text-dim)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 8a6 6 0 0 0-12 0c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.7 21a2 2 0 0 1-3.4 0"/></svg>
+        <div><b>Push notifications</b><br /><small>Alerts are evaluated on the server, so notifications arrive even when the app is closed.</small></div>
+      </div>
+      <button class="btn-outline" id="signout">Sign out</button>
+      <p class="demo-note">Alerto v0.1.0 — web demo of the Flutter app</p>
+    </div>
+  </section>
+
+  <!-- Bottom nav -->
+  <nav class="bottom-nav" id="bottom-nav">
+    <button data-tab="dashboard" class="active"><svg viewBox="0 0 24 24" width="19" height="19" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="3" y="3" width="7" height="9" rx="1.5"/><rect x="14" y="3" width="7" height="5" rx="1.5"/><rect x="14" y="12" width="7" height="9" rx="1.5"/><rect x="3" y="16" width="7" height="5" rx="1.5"/></svg>Dashboard</button>
+    <button data-tab="alerts"><svg viewBox="0 0 24 24" width="19" height="19" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 8a6 6 0 0 0-12 0c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.7 21a2 2 0 0 1-3.4 0"/></svg>Alerts</button>
+    <button data-tab="history"><svg viewBox="0 0 24 24" width="19" height="19" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 3"/></svg>History</button>
+    <button data-tab="settings"><svg viewBox="0 0 24 24" width="19" height="19" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.7 1.7 0 0 0 .34 1.87l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.7 1.7 0 0 0-1.87-.34 1.7 1.7 0 0 0-1 1.55V21a2 2 0 1 1-4 0v-.09a1.7 1.7 0 0 0-1-1.55 1.7 1.7 0 0 0-1.87.34l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.7 1.7 0 0 0 .34-1.87 1.7 1.7 0 0 0-1.55-1H3a2 2 0 1 1 0-4h.09a1.7 1.7 0 0 0 1.55-1 1.7 1.7 0 0 0-.34-1.87l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.7 1.7 0 0 0 1.87.34h0a1.7 1.7 0 0 0 1-1.55V3a2 2 0 1 1 4 0v.09a1.7 1.7 0 0 0 1 1.55h0a1.7 1.7 0 0 0 1.87-.34l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.7 1.7 0 0 0-.34 1.87v0a1.7 1.7 0 0 0 1.55 1H21a2 2 0 1 1 0 4h-.09a1.7 1.7 0 0 0-1.55 1z"/></svg>Settings</button>
+  </nav>
+</div>
+
+<script src="app.js"></script>
+</body>
+</html>

@@ -1,7 +1,7 @@
 {
-  "name": "pricealert-functions",
+  "name": "alerto-functions",
   "version": "0.1.0",
-  "description": "Backend for PriceAlert: market data proxy, alert evaluation, FCM dispatch.",
+  "description": "Backend for Alerto: market data proxy, alert evaluation, FCM dispatch.",
   "main": "lib/index.js",
   "engines": { "node": "20" },
   "scripts": {

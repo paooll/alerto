@@ -24,6 +24,8 @@ firestore.indexes.json.backup
 # Platform
 android/.gradle/
 android/local.properties
+functions/lib/
+functions/node_modules/
 ios/Pods/
 ios/.symlinks/
 ios/Flutter/Flutter.framework

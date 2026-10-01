@@ -1,4 +1,4 @@
-# PriceAlert
+# Alerto
 
 Cross-platform (Flutter, Android + iOS) personal price-alert app for **Forex, Gold (XAU/USD) and CFD/index instruments**, backed by **Firebase**. Price monitoring and notifications only — no trading or order execution.
 
