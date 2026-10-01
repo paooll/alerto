@@ -2,7 +2,7 @@
 
 Cross-platform (Flutter, Android + iOS) personal price-alert app for **Forex, Gold (XAU/USD) and CFD/index instruments**, backed by **Firebase**. Price monitoring and notifications only — no trading or order execution.
 
-> **Build in progress** — this repo is being developed step by step. Current status: Steps 1–4 complete (scaffold, auth, market-data integration, alert creation/management UI: dashboard, instrument search/detail with chart, multi-condition alert editor, active alerts list). See `docs/MARKET_DATA.md` for the verified provider choice.
+> **Build in progress** — this repo is being developed step by step. Current status: Steps 1–8 complete (scaffold, auth, market-data integration, alert creation/management, backend evaluator + FCM, alert history, Quicksand/glass UI with light+dark themes). Deployment tooling in `docs/DEPLOYMENT.md`. See `docs/MARKET_DATA.md` for the verified provider choice.
 
 ## Architecture
 
@@ -74,11 +74,24 @@ flutter test
 cd functions && npm run build   # typecheck backend
 ```
 
-## Deploy targets
+## Deployment
+
+Full deployment guide: **[docs/DEPLOYMENT.md](docs/DEPLOYMENT.md)** — covers
+platform-folder bootstrap, Android/iOS release builds + signing, Firebase
+deploy, and Firebase App Distribution (CLI + fastlane).
+
+Quick reference:
+
+```bash
+sh ./scripts/bootstrap.sh                 # one-time: platforms + Firebase wiring
+sh ./scripts/deploy-backend.sh            # functions, rules, indexes
+sh ./scripts/distribute.sh android qa-testers "notes"   # App Distribution (APK)
+sh ./scripts/distribute.sh ios-fastlane qa-testers "notes"  # App Distribution (IPA)
+```
 
 - **Firebase**: `firebase deploy` (functions, rules, indexes)
 - **Android/iOS**: standard `flutter build apk --release` / `flutter build ipa`
-- **Firebase App Distribution**: `firebase apps:create` + `flutter build apk && firebase distribution:groups:create` — full steps land in Step 11.
+- **Firebase App Distribution**: tester groups + `scripts/distribute.sh`
 
 ## Security
 

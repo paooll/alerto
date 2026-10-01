@@ -33,5 +33,12 @@ ios/Flutter/Flutter.podspec
 ios/Runner.xcworkspace/xcuserdata/
 ios/Runner.xcodeproj/xcuserdata/
 
+# Signing / distribution
+android/key.properties
+*.keystore
+*.jks
+ios/fastlane/report.xml
+ios/fastlane/Preview.html
+
 # OS
 .DS_Store

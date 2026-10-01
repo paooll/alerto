@@ -1,0 +1,28 @@
+# Fastlane lane for Alerto iOS distribution via Firebase App Distribution.
+# One-time setup:
+#   cd ios && fastlane init
+#   fastlane add_plugin firebase_app_distribution
+# Env vars needed:
+#   FIREBASE_APP_ID       – iOS app ID from Firebase console settings
+#   FIREBASE_CLI_TOKEN    – `firebase login:ci` token (CI only)
+default_platform(:ios)
+
+platform :ios do
+  desc "Build release IPA and distribute to App Distribution"
+  lane :distribute do |options|
+    setup_ci if ENV["CI"]
+
+    build_app(
+      workspace: "Runner.xcworkspace",
+      scheme: "Runner",
+      export_method: "ad-hoc"
+    )
+
+    firebase_app_distribution(
+      app: ENV["FIREBASE_APP_ID"],
+      groups: options[:group] || "qa-testers",
+      release_notes: options[:notes] || "Latest build",
+      firebase_cli_token: ENV["FIREBASE_CLI_TOKEN"]
+    )
+  end
+end
